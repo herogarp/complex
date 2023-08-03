@@ -19,7 +19,7 @@ after_success:
   - docker build -t herogarp/multi-server ./server
   - docker build -t herogarp/multi-worker ./worker
 #Login to docker CLI to push image to DockerHUB
-  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_id" --password-stdin
+  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
 #Take the images we builded and push them to docker hub
   - docker push herogarp/multi-client
   - docker push herogarp/multi-nginx
