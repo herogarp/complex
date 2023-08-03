@@ -1,0 +1,38 @@
+# language: generic 
+
+sudo: required
+services:
+  - docker
+
+#Build the test image
+before_install:
+  - docker build -t herogarp/complex-test -f ./client/Dockerfile.dev ./client
+
+#Run image for test
+script:
+  - docker run -e CI=true herogarp/complex-test npm test -- --coverage
+
+#If text is successfull, build the whole project
+after_success:
+  - docker build -t herogarp/multi-client ./client
+  - docker build -t herogarp/multi-nginx ./nginx
+  - docker build -t herogarp/multi-server ./server
+  - docker build -t herogarp/multi-worker ./worker
+#Login to docker CLI to push image to DockerHUB
+  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_id" --password-stdin
+#Take the images we builded and push them to docker hub
+  - docker push herogarp/multi-client
+  - docker push herogarp/multi-nginx
+  - docker push herogarp/multi-server
+  - docker push herogarp/multi-worker
+# deploy:
+#   provider: elasticbeanstalk
+#   region: "us-east-1"
+#   app: "docker-react"
+#   env: "docker-react-env"
+#   bucket_name: "elasticbeanstalk-us-east-1-826418236555"
+#   bucket_path: "complex"
+#   on:
+#     branch: master
+#   acces_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: "$AWS_SECRET_KEY"
