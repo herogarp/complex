@@ -25,14 +25,14 @@ after_success:
   - docker push herogarp/multi-nginx
   - docker push herogarp/multi-server
   - docker push herogarp/multi-worker
-# deploy:
-#   provider: elasticbeanstalk
-#   region: "us-east-1"
-#   app: "docker-react"
-#   env: "docker-react-env"
-#   bucket_name: "elasticbeanstalk-us-east-1-826418236555"
-#   bucket_path: "complex"
-#   on:
-#     branch: master
-#   acces_key_id: $AWS_ACCESS_KEY
-#   secret_access_key: "$AWS_SECRET_KEY"
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "complex"
+  env: "complex-env"
+  bucket_name: "elasticbeanstalk-us-east-1-826418236555"
+  bucket_path: "docker-multi"
+  on:
+    branch: master
+  acces_key_id: $AWS_ACCESS_KEY
+  secret_access_key: "$AWS_SECRET_KEY"
